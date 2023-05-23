@@ -1,13 +1,6 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import { observer } from 'mobx-react-lite';
-import postsStore from './store/posts.store';
-function App() {
-  const { posts, getPosts } = postsStore;
-  useEffect(() => {
-    getPosts();
-  }, []);
+import PostsList from './components/PostsList';
 
+function App() {
   // const [posts, setPosts] = useState([]);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [fetching, setFetching] = useState(true);
@@ -62,18 +55,9 @@ function App() {
   // };
   return (
     <div className='App'>
-      {/* {error && <div className='error'>{error}</div>} */}
-      {posts &&
-        posts.map((post) => (
-          <div className='post' key={post.id}>
-            <div className='post__title'>
-              {post.id}. {post.title}
-            </div>
-            <img src={post.thumbnailUrl} />
-          </div>
-        ))}
+      <PostsList />
     </div>
   );
 }
 
-export default observer(App);
+export default App;
