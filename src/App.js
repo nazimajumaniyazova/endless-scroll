@@ -1,23 +1,63 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [fetching, setFetching] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
+  useEffect(() => {
+    if (fetching) {
+      fetch(
+        `https://jsonplaceholder.typicode.com/photos?_limit=10&_page=${currentPage}`
+      )
+        .then((response) => {
+          setTotalCount(response.headers['x-total-count']);
+          for (var pair of response.headers.entries()) {
+            if (pair[0] === 'x-total-count') {
+              setTotalCount(pair[1]);
+            }
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setPosts([...posts, ...data]);
+          setCurrentPage((prevState) => prevState + 1);
+        })
+        .finally(() => setFetching(false));
+    }
+  }, [fetching]);
+
+  useEffect(() => {
+    document.addEventListener('scroll', scrollHandler);
+
+    return function () {
+      document.removeEventListener('scroll', scrollHandler);
+    };
+  }, [totalCount]);
+
+  const scrollHandler = (e) => {
+    if (
+      e.target.documentElement.scrollHeight -
+        e.target.documentElement.scrollTop -
+        window.innerHeight <
+        100 &&
+      posts.length < totalCount
+    ) {
+      setFetching(true);
+    }
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      {posts &&
+        posts.map((post) => (
+          <div className='post' key={post.id}>
+            <div className='post__title'>
+              {post.id}. {post.title}
+            </div>
+            <img src={post.thumbnailUrl} />
+          </div>
+        ))}
     </div>
   );
 }
