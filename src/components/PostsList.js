@@ -3,8 +3,15 @@ import { observer } from 'mobx-react-lite';
 import postsStore from '../store/posts.store';
 
 function PostsList() {
-  const { posts, getPosts, setFetching, totalCount, fetching, isLoading } =
-    postsStore;
+  const {
+    posts,
+    getPosts,
+    setFetching,
+    totalCount,
+    fetching,
+    isLoading,
+    error,
+  } = postsStore;
   const mounted = useRef(false);
   useEffect(() => {
     if (mounted.current) {
@@ -24,8 +31,7 @@ function PostsList() {
       e.target.documentElement.scrollHeight -
         e.target.documentElement.scrollTop -
         window.innerHeight <
-        100 &&
-      posts.length < totalCount
+      100
     ) {
       setFetching(true);
     }
@@ -38,9 +44,10 @@ function PostsList() {
             <div className='post__title'>
               {post.id}. {post.title}
             </div>
-            <img src={post.thumbnailUrl} />
+            <img src={post.thumbnailUrl} alt='' />
           </div>
         ))}
+      {error && <p>{error}</p>}
       {isLoading ? <p style={{ fontSize: '40px' }}>Loading...</p> : ''}
     </div>
   );

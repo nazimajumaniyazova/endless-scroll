@@ -9,8 +9,7 @@ class postsStore {
   isLoading = false;
   currentPage = 1;
   fetching = true;
-  totalCount = 100;
-
+  error = null;
   getPosts = async () => {
     if (this.fetching) {
       try {
@@ -27,6 +26,7 @@ class postsStore {
       } catch (err) {
         console.log(err);
         this.isLoading = false;
+        this.error = err.message;
       } finally {
         this.fetching = false;
         this.currentPage++;
