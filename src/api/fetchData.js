@@ -1,2 +1,4 @@
-export const fetchData = async () =>
-  await fetch('https://jsonplaceholder.typicode.com/photos?_limit=10&_page=1');
+export const fetchData = async (page) =>
+  await fetch(
+    `https://jsonplaceholder.typicode.com/photos?_limit=10&_page=${page}`
+  );
