@@ -3,15 +3,8 @@ import { observer } from 'mobx-react-lite';
 import postsStore from '../store/posts.store';
 
 function PostsList() {
-  const {
-    posts,
-    getPosts,
-    setFetching,
-    totalCount,
-    fetching,
-    isLoading,
-    error,
-  } = postsStore;
+  const { posts, getPosts, setFetching, fetching, isLoading, error } =
+    postsStore;
   const mounted = useRef(false);
   useEffect(() => {
     if (mounted.current) {
