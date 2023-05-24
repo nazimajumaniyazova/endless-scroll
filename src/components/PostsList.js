@@ -1,12 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import postsStore from '../store/posts.store';
 
 function PostsList() {
   const { posts, getPosts, setFetching, totalCount, fetching, isLoading } =
     postsStore;
+  const mounted = useRef(false);
   useEffect(() => {
-    getPosts();
+    if (mounted.current) {
+      getPosts();
+    }
+    mounted.current = true;
   }, [fetching]);
 
   useEffect(() => {
@@ -30,7 +34,7 @@ function PostsList() {
     <div>
       {posts &&
         posts.map((post, inex) => (
-          <div className='post' key={inex}>
+          <div className='post' key={inex} id={inex}>
             <div className='post__title'>
               {post.id}. {post.title}
             </div>

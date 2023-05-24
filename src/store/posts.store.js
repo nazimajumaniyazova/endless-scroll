@@ -7,7 +7,7 @@ class postsStore {
   }
   posts = [];
   isLoading = false;
-  currentPage = 1;
+  currentPage = 0;
   fetching = true;
   totalCount = 100;
 
@@ -23,13 +23,13 @@ class postsStore {
         runInAction(() => {
           this.posts.push(...data);
           this.isLoading = false;
-          this.currentPage++;
         });
       } catch (err) {
         console.log(err);
         this.isLoading = false;
       } finally {
         this.fetching = false;
+        this.currentPage++;
       }
     }
   };
