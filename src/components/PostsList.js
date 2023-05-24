@@ -38,15 +38,14 @@ function PostsList() {
   };
   return (
     <div>
-      {posts &&
-        posts.map((post, inex) => (
-          <div className='post' key={inex} id={inex}>
-            <div className='post__title'>
-              {post.id}. {post.title}
-            </div>
-            <img src={post.thumbnailUrl} alt='' />
+      {posts.map((post) => (
+        <div key={post.id}>
+          <div>
+            {post.id}. {post.title}
           </div>
-        ))}
+          <img src={post.thumbnailUrl} alt='' />
+        </div>
+      ))}
       {error && <p>{error}</p>}
       {isLoading ? <p style={{ fontSize: '40px' }}>Loading...</p> : ''}
     </div>
